@@ -23,8 +23,8 @@ def get_sla(ticket: Document) -> Document:
     q = (
         frappe.qb.from_(QBSla)
         .select(QBSla.name, QBSla.condition)
-        .where(QBSla.enabled == True)
-        .where(QBSla.default_sla == False)
+        .where(QBSla.enabled == 1)
+        .where(QBSla.default_sla == 0)
         .where(Criterion.any([QBSla.start_date.isnull(), QBSla.start_date <= now]))
         .where(Criterion.any([QBSla.end_date.isnull(), QBSla.end_date >= now]))
     )
@@ -53,8 +53,8 @@ def get_default() -> Document:
     return frappe.get_last_doc(
         DOCTYPE,
         filters={
-            "enabled": True,
-            "default_sla": True,
+            "enabled": 1,
+            "default_sla": 1,
         },
     )
 
